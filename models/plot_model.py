@@ -9,3 +9,4 @@ class PlotModel(BaseModel):
     supporting_characters: Optional[str]
     villain: Optional[str]
     details: Optional[str]
+    theme: Optional[str]
