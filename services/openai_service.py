@@ -20,9 +20,14 @@ async def generate_story(plot: PlotModel, nickname: str):
 
     user = get_user(nickname)
 
+    language = 'English'
+
+    if plot.language == 'pt':
+        language = 'Brazilian Portuguese'
+
     if (user['tokens'] > 0):
         openai.api_key = os.getenv("OPENAI_API_KEY")
-        plot_text = f'Write a {plot.theme} story in Brazilian Portuguese with the following characters and details:\n Main character: {plot.main_character} \n Secondary Characters: {plot.supporting_characters}\n Villain: {plot.villain}\n Please provide between 12 and 15 paragraphs, no longer than 2 lines each one. Do not enumerate them'
+        plot_text = f'Write a {plot.theme} story in {language} with the following characters and details:\n Main character: {plot.main_character} \n Secondary Characters: {plot.supporting_characters}\n Villain: {plot.villain}\n Please provide between 12 and 15 paragraphs, no longer than 2 lines each one. Do not enumerate them'
         # plot_text = f'Escreva uma história infantil com os seguintes personagens e detalhes:\n Protagonista: {plot.main_character} \n Coadjuvantes: {plot.supporting_characters}\n Vilão: {plot.villain}\n Detalhes: {plot.details}\n  Por favor forneça de 12 a 15 parágrafos, não maior do que 2 linhas cada um. Não enumere-os.'
         completion_resp = openai.Completion.create(
             prompt=plot_text, engine="text-davinci-003", max_tokens=1000)

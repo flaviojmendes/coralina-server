@@ -10,3 +10,4 @@ class PlotModel(BaseModel):
     villain: Optional[str]
     details: Optional[str]
     theme: Optional[str]
+    language: Optional[str]
