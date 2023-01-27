@@ -8,4 +8,5 @@ class ParagraphModel(BaseModel):
 
 class StoryModel(BaseModel):
     paragraphs: Optional[List[ParagraphModel]]
+    owner: Optional[str]
 

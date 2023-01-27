@@ -8,6 +8,9 @@ fastapi = "*"
 uvicorn = {extras = ["standard"], version = "*"}
 openai = "*"
 python-dotenv = "*"
+python-jose = "*"
+firebase-admin = "*"
+google-cloud-storage = "*"
 
 [dev-packages]
 autopep8 = "*"
