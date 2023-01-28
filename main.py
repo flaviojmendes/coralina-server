@@ -112,7 +112,7 @@ async def post_create_user(user: UserViewModel, Authorization=Header(...)):
         return create_user(user)
 
 
-@app_public.post("/sale")
+@app_public.post("/sale/")
 async def post_sale(product_id: str = Form(...), email: str = Form(...), quantity: int = Form(...), ):
     process_sale(email.split("@")[0], product_id, quantity)
 
