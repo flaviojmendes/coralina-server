@@ -4,6 +4,7 @@ from urllib.request import urlopen
 import dotenv
 from fastapi import FastAPI, Form, HTTPException, Header, Request, Response
 import uvicorn
+from exceptions.OutOfTokensException import OutOfTokensException
 from models.plot_model import PlotModel
 from models.story_model import StoryModel
 from fastapi.middleware.cors import CORSMiddleware
@@ -78,6 +79,9 @@ def decode_jwt(token: str):
         raise HTTPException(status_code=401, detail="invalid_header")
     except HTTPException as e:
         raise e
+
+    except OutOfTokensException as e:
+        raise HTTPException(status_code=402, detail=e)
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
 
@@ -89,8 +93,9 @@ async def generate(plot: PlotModel, Authorization=Header(...)) -> StoryModel:
         nickname = token["https://coralina.app/nickname"]
 
         return await generate_story(plot, nickname)
+    except OutOfTokensException as e:
+        raise e
     except Exception as e:
-        print(f'Error {e}')
         return HTTPException(status_code=500, detail=e)
 
 
