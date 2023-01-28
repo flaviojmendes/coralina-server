@@ -1,5 +1,6 @@
 from datetime import datetime
 from os import environ
+import os
 from firebase_admin import firestore
 from models.user_model import UserViewModel
 from firebase_admin import credentials
@@ -50,6 +51,18 @@ def decrement_user_token(user_login: str):
         doc_ref.set({u'user_login': user_login,
                     u'tokens': current_tokens
                      })
+
+
+def process_sale(user_login: str, product_id: str, tokens: int):
+
+    if product_id == os.getenv("GUMROAD_PRODUCT_ID"):
+        doc_ref = db.collection(u'users').document(user_login)
+        if doc_ref.get().exists:
+            user_dict = doc_ref.get().to_dict()
+            current_tokens = user_dict['tokens'] + (tokens * 5)
+            doc_ref.set({u'user_login': user_login,
+                        u'tokens': current_tokens
+                        })
 
 
 def get_user(user_login: str):

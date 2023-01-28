@@ -11,6 +11,7 @@ python-dotenv = "*"
 python-jose = "*"
 firebase-admin = "*"
 google-cloud-storage = "*"
+python-multipart = "*"
 
 [dev-packages]
 autopep8 = "*"
