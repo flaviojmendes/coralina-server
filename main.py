@@ -38,6 +38,8 @@ async def verify_user_agent(request: Request, call_next):
         payload = decode_jwt(token)
         response = await call_next(request)
         return response
+    except OutOfTokensException as e:
+        return Response(status_code=402)
     except Exception as err:
         return Response(status_code=400)
 

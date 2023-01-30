@@ -1,5 +1,6 @@
 import base64
 from datetime import datetime
+from threading import Thread
 import uuid
 from google.cloud import storage
 import os
@@ -37,10 +38,20 @@ async def generate_story(plot: PlotModel, nickname: str):
             filter(lambda text: len(text) > 10, paragraphs_text))
         paragraphs_text = group_paragraphs(paragraphs_text, 2)
         paragraphs = []
+        threads = []
+
         for paragraph_text in paragraphs_text:
             paragraph = ParagraphModel(text=paragraph_text)
+
+            process = Thread(target=generate_image, args=[paragraph, plot])
+            process.start()
+            threads.append(process)
+
             generate_image(paragraph, plot)
             paragraphs.append(paragraph)
+
+        for process in threads:
+            process.join()
 
         story = StoryModel()
         story.paragraphs = paragraphs
